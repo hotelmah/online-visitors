@@ -1,6 +1,6 @@
 <?php
 
-namespace KAPNET;
+namespace OnlineVisitors;
 
 require_once('Includes/function.onlinevisitors.php');
 

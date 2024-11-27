@@ -1,23 +1,23 @@
 <?php
 
 // 01APR2024
-namespace KAPNET;
+namespace OnlineVisitors;
 
 class ClsOnlineVisitorsCurl
 {
-    private object $KAPNETCurl;
-    private array $KAPNETOnlineVisitorsGeoIP;
+    private object $OVCurl;
+    private array $OnlineVisitorsGeoIP;
 
     public function __construct()
     {
         // create a new cURL resource
-        $this->KAPNETCurl = curl_init();
+        $this->OVCurl = curl_init();
 
         // set URL and other appropriate options
-        curl_setopt($this->KAPNETCurl, CURLOPT_HEADER, 0);
-        curl_setopt($this->KAPNETCurl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($this->OVCurl, CURLOPT_HEADER, 0);
+        curl_setopt($this->OVCurl, CURLOPT_RETURNTRANSFER, true);
 
-        $this->KAPNETOnlineVisitorsGeoIP = array();
+        $this->OnlineVisitorsGeoIP = array();
     }
 
     public function populateIPAddressGeo(string $TempRemoteIPAddress, string $TempServerLocalIPAddress, string $TempServerHTTPHostName, string $TempServerScriptName, string $TempServerRequestTimeStamp): void
@@ -27,39 +27,39 @@ class ClsOnlineVisitorsCurl
 
         // if old-local resolves to 127.0.0.1 and REMOTE_ADDR resolves to 127.0.0.1, then get external IP. Otherwise, use REMOTE_ADDR
         if ($TempRemoteIPAddress == $TempServerLocalIPAddress) {
-            curl_setopt($this->KAPNETCurl, CURLOPT_URL, "http://ip-api.com/json/" . (($Response == 0) ? file_get_contents("http://ipecho.net/plain") : ""));
+            curl_setopt($this->OVCurl, CURLOPT_URL, "http://ip-api.com/json/" . (($Response == 0) ? file_get_contents("http://ipecho.net/plain") : ""));
         } else {
-            curl_setopt($this->KAPNETCurl, CURLOPT_URL, "http://ip-api.com/json/" . $TempRemoteIPAddress);
+            curl_setopt($this->OVCurl, CURLOPT_URL, "http://ip-api.com/json/" . $TempRemoteIPAddress);
         }
 
         if ($Response == 0) {
-            $this->KAPNETOnlineVisitorsGeoIP = json_decode(curl_exec($this->KAPNETCurl), true);
+            $this->OnlineVisitorsGeoIP = json_decode(curl_exec($this->OVCurl), true);
         }
 
         if (($TempRemoteIPAddress == null) || ($TempRemoteIPAddress == "")) {
-            if (isset($this->KAPNETOnlineVisitorsGeoIP['query'])) {
-                $this->KAPNETOnlineVisitorsGeoIP['RemoteIPAddress'] = $this->KAPNETOnlineVisitorsGeoIP['query'];
+            if (isset($this->OnlineVisitorsGeoIP['query'])) {
+                $this->OnlineVisitorsGeoIP['RemoteIPAddress'] = $this->OnlineVisitorsGeoIP['query'];
             } else {
-                $this->KAPNETOnlineVisitorsGeoIP['RemoteIPAddress'] = "null or empty";
+                $this->OnlineVisitorsGeoIP['RemoteIPAddress'] = "null or empty";
             }
         } else {
-            $this->KAPNETOnlineVisitorsGeoIP['RemoteIPAddress'] = $TempRemoteIPAddress;
-            $this->KAPNETOnlineVisitorsGeoIP['RemoteExternalIPAddress'] =  (($Response == 0) ? file_get_contents("http://ipecho.net/plain") : "No Internet");
+            $this->OnlineVisitorsGeoIP['RemoteIPAddress'] = $TempRemoteIPAddress;
+            $this->OnlineVisitorsGeoIP['RemoteExternalIPAddress'] =  (($Response == 0) ? file_get_contents("http://ipecho.net/plain") : "No Internet");
         }
 
-        $this->KAPNETOnlineVisitorsGeoIP['ServerLocalIPAddress'] = $TempServerLocalIPAddress;
-        $this->KAPNETOnlineVisitorsGeoIP['ServerExternalIPAddress'] = gethostbyname($TempServerHTTPHostName);
-        $this->KAPNETOnlineVisitorsGeoIP['ServerHTTPHostName'] = $TempServerHTTPHostName;
-        $this->KAPNETOnlineVisitorsGeoIP['ServerScriptName'] = $TempServerScriptName;
-        $this->KAPNETOnlineVisitorsGeoIP['ServerRequestTimeStamp'] = date("Y-m-d H:i:s", date($TempServerRequestTimeStamp));
+        $this->OnlineVisitorsGeoIP['ServerLocalIPAddress'] = $TempServerLocalIPAddress;
+        $this->OnlineVisitorsGeoIP['ServerExternalIPAddress'] = gethostbyname($TempServerHTTPHostName);
+        $this->OnlineVisitorsGeoIP['ServerHTTPHostName'] = $TempServerHTTPHostName;
+        $this->OnlineVisitorsGeoIP['ServerScriptName'] = $TempServerScriptName;
+        $this->OnlineVisitorsGeoIP['ServerRequestTimeStamp'] = date("Y-m-d H:i:s", date($TempServerRequestTimeStamp));
     }
 
     /* ===================================================================================================================== */
 
     public function getRemoteIPAddress(): string
     {
-        if (isset($this->KAPNETOnlineVisitorsGeoIP['RemoteIPAddress'])) {
-            return $this->KAPNETOnlineVisitorsGeoIP['RemoteIPAddress'];
+        if (isset($this->OnlineVisitorsGeoIP['RemoteIPAddress'])) {
+            return $this->OnlineVisitorsGeoIP['RemoteIPAddress'];
         } else {
             return "No Remote IP Adress";
         }
@@ -67,8 +67,8 @@ class ClsOnlineVisitorsCurl
 
     public function getRemoteExternalIPAddress(): string
     {
-        if (isset($this->KAPNETOnlineVisitorsGeoIP['RemoteExternalIPAddress'])) {
-            return $this->KAPNETOnlineVisitorsGeoIP['RemoteExternalIPAddress'];
+        if (isset($this->OnlineVisitorsGeoIP['RemoteExternalIPAddress'])) {
+            return $this->OnlineVisitorsGeoIP['RemoteExternalIPAddress'];
         } else {
             return "No Remote External IP Adress";
         }
@@ -78,8 +78,8 @@ class ClsOnlineVisitorsCurl
 
     public function getCountry(): string
     {
-        if (isset($this->KAPNETOnlineVisitorsGeoIP['country'])) {
-            return $this->KAPNETOnlineVisitorsGeoIP['country'];
+        if (isset($this->OnlineVisitorsGeoIP['country'])) {
+            return $this->OnlineVisitorsGeoIP['country'];
         } else {
             return "No Country";
         }
@@ -87,8 +87,8 @@ class ClsOnlineVisitorsCurl
 
     public function getState(): string
     {
-        if (isset($this->KAPNETOnlineVisitorsGeoIP['regionName'])) {
-            return $this->KAPNETOnlineVisitorsGeoIP['regionName'];
+        if (isset($this->OnlineVisitorsGeoIP['regionName'])) {
+            return $this->OnlineVisitorsGeoIP['regionName'];
         } else {
             return "No State";
         }
@@ -96,8 +96,8 @@ class ClsOnlineVisitorsCurl
 
     public function getCity(): string
     {
-        if (isset($this->KAPNETOnlineVisitorsGeoIP['city'])) {
-            return $this->KAPNETOnlineVisitorsGeoIP['city'];
+        if (isset($this->OnlineVisitorsGeoIP['city'])) {
+            return $this->OnlineVisitorsGeoIP['city'];
         } else {
             return "No City";
         }
@@ -105,8 +105,8 @@ class ClsOnlineVisitorsCurl
 
     public function getZipCode(): string
     {
-        if (isset($this->KAPNETOnlineVisitorsGeoIP['zip'])) {
-            return $this->KAPNETOnlineVisitorsGeoIP['zip'];
+        if (isset($this->OnlineVisitorsGeoIP['zip'])) {
+            return $this->OnlineVisitorsGeoIP['zip'];
         } else {
             return "No Zip Code";
         }
@@ -114,8 +114,8 @@ class ClsOnlineVisitorsCurl
 
     public function getTimeZone(): string
     {
-        if (isset($this->KAPNETOnlineVisitorsGeoIP['timezone'])) {
-            return $this->KAPNETOnlineVisitorsGeoIP['timezone'];
+        if (isset($this->OnlineVisitorsGeoIP['timezone'])) {
+            return $this->OnlineVisitorsGeoIP['timezone'];
         } else {
             return "No Time Zone";
         }
@@ -123,8 +123,8 @@ class ClsOnlineVisitorsCurl
 
     public function getOrganization(): string
     {
-        if (isset($this->KAPNETOnlineVisitorsGeoIP['isp'])) {
-            return $this->KAPNETOnlineVisitorsGeoIP['isp'];
+        if (isset($this->OnlineVisitorsGeoIP['isp'])) {
+            return $this->OnlineVisitorsGeoIP['isp'];
         } else {
             return "No Organization";
         }
@@ -134,8 +134,8 @@ class ClsOnlineVisitorsCurl
 
     public function getServerLocalIPAddress(): string
     {
-        if (isset($this->KAPNETOnlineVisitorsGeoIP['ServerLocalIPAddress'])) {
-            return $this->KAPNETOnlineVisitorsGeoIP['ServerLocalIPAddress'];
+        if (isset($this->OnlineVisitorsGeoIP['ServerLocalIPAddress'])) {
+            return $this->OnlineVisitorsGeoIP['ServerLocalIPAddress'];
         } else {
             return "No Server Local IP Adress";
         }
@@ -143,8 +143,8 @@ class ClsOnlineVisitorsCurl
 
     public function getServerExternalIPAddress(): string
     {
-        if (isset($this->KAPNETOnlineVisitorsGeoIP['ServerExternalIPAddress'])) {
-            return $this->KAPNETOnlineVisitorsGeoIP['ServerExternalIPAddress'];
+        if (isset($this->OnlineVisitorsGeoIP['ServerExternalIPAddress'])) {
+            return $this->OnlineVisitorsGeoIP['ServerExternalIPAddress'];
         } else {
             return "No Server External IP Adress";
         }
@@ -152,8 +152,8 @@ class ClsOnlineVisitorsCurl
 
     public function getServerHTTPHostName(): string
     {
-        if (isset($this->KAPNETOnlineVisitorsGeoIP['ServerHTTPHostName'])) {
-            return $this->KAPNETOnlineVisitorsGeoIP['ServerHTTPHostName'];
+        if (isset($this->OnlineVisitorsGeoIP['ServerHTTPHostName'])) {
+            return $this->OnlineVisitorsGeoIP['ServerHTTPHostName'];
         } else {
             return "No Server HTTP Host Name";
         }
@@ -161,8 +161,8 @@ class ClsOnlineVisitorsCurl
 
     public function getServerScriptName(): string
     {
-        if (isset($this->KAPNETOnlineVisitorsGeoIP['ServerScriptName'])) {
-            return $this->KAPNETOnlineVisitorsGeoIP['ServerScriptName'];
+        if (isset($this->OnlineVisitorsGeoIP['ServerScriptName'])) {
+            return $this->OnlineVisitorsGeoIP['ServerScriptName'];
         } else {
             return "No Server Script Name";
         }
@@ -170,8 +170,8 @@ class ClsOnlineVisitorsCurl
 
     public function getServerRequestTimeStamp(): string
     {
-        if (isset($this->KAPNETOnlineVisitorsGeoIP['ServerRequestTimeStamp'])) {
-            return $this->KAPNETOnlineVisitorsGeoIP['ServerRequestTimeStamp'];
+        if (isset($this->OnlineVisitorsGeoIP['ServerRequestTimeStamp'])) {
+            return $this->OnlineVisitorsGeoIP['ServerRequestTimeStamp'];
         } else {
             return "No Server Request Time Stamp";
         }
@@ -182,8 +182,8 @@ class ClsOnlineVisitorsCurl
     public function __destruct()
     {
         // close cURL resource, and free up system resources
-        unset($this->KAPNETOnlineVisitorsGeoIP);
-        curl_close($this->KAPNETCurl);
-        unset($this->KAPNETCurl);
+        unset($this->OnlineVisitorsGeoIP);
+        curl_close($this->OVCurl);
+        unset($this->OVCurl);
     }
 }

@@ -1,17 +1,17 @@
 <?php
 
-namespace KAPNET;
+namespace OnlineVisitors;
 
 use DateTime;
 
-require_once('class.db.sqlite3.kapnet.base.php');
+require_once('class.db.sqlite3.base.php');
 
 class ClsDataBaseOnlineVisitors extends ClsDataBaseSQLite3Base
 {
     private function onlineVisitorsCheckIPAdressReInsert(string $TempRemoteIPAddress): bool
     {
         $SearchTimeStamp = strtotime("-10 Minutes");
-        $TempSQLite3Result = $this->KAPNETSQLite3->query("SELECT RemoteIPAddress, ServerRequestTimeStamp FROM OnlineVisitors WHERE RemoteIPAddress = '" . $TempRemoteIPAddress . "'");
+        $TempSQLite3Result = $this->OVSQLite3->query("SELECT RemoteIPAddress, ServerRequestTimeStamp FROM OnlineVisitors WHERE RemoteIPAddress = '" . $TempRemoteIPAddress . "'");
         if ($TempSQLite3Result->numColumns() > 0) {
             $NumRows = 0;
             while ($Row = $TempSQLite3Result->fetchArray(SQLITE3_ASSOC)) {
@@ -34,24 +34,24 @@ class ClsDataBaseOnlineVisitors extends ClsDataBaseSQLite3Base
     {
         $TempBool = false;
 
-        if (isset($this->KAPNETSQlite3Stmt)) {
-            $this->KAPNETSQlite3Stmt->reset();
-            $this->KAPNETSQlite3Stmt->clear();
+        if (isset($this->OVSQlite3Stmt)) {
+            $this->OVSQlite3Stmt->reset();
+            $this->OVSQlite3Stmt->clear();
         }
 
-        if ($this->KAPNETSQlite3Stmt = $this->KAPNETSQLite3->prepare("SELECT RemoteIPAddress FROM OnlineVisitors WHERE RemoteIPAddress = :RemoteIPAddress AND State = :State AND City = :City AND ZipCode = :ZipCode")) {
-            $TempBindResult = $this->KAPNETSQlite3Stmt->bindValue(':RemoteIPAddress', $TempRemoteIPAddress, SQLITE3_TEXT);
-            $TempBindResult = $this->KAPNETSQlite3Stmt->bindValue(':State', $TempState, SQLITE3_TEXT);
-            $TempBindResult = $this->KAPNETSQlite3Stmt->bindValue(':City', $TempCity, SQLITE3_TEXT);
-            $TempBindResult = $this->KAPNETSQlite3Stmt->bindValue(':ZipCode', $TempZipCode, SQLITE3_TEXT);
+        if ($this->OVSQlite3Stmt = $this->OVSQLite3->prepare("SELECT RemoteIPAddress FROM OnlineVisitors WHERE RemoteIPAddress = :RemoteIPAddress AND State = :State AND City = :City AND ZipCode = :ZipCode")) {
+            $TempBindResult = $this->OVSQlite3Stmt->bindValue(':RemoteIPAddress', $TempRemoteIPAddress, SQLITE3_TEXT);
+            $TempBindResult = $this->OVSQlite3Stmt->bindValue(':State', $TempState, SQLITE3_TEXT);
+            $TempBindResult = $this->OVSQlite3Stmt->bindValue(':City', $TempCity, SQLITE3_TEXT);
+            $TempBindResult = $this->OVSQlite3Stmt->bindValue(':ZipCode', $TempZipCode, SQLITE3_TEXT);
             if ($TempBindResult) {
-                if ($this->KAPNETSQLite3Result = $this->KAPNETSQlite3Stmt->execute()) {
-                    while ($Row = $this->KAPNETSQLite3Result->fetchArray(SQLITE3_ASSOC)) {
+                if ($this->OVSQLite3Result = $this->OVSQlite3Stmt->execute()) {
+                    while ($Row = $this->OVSQLite3Result->fetchArray(SQLITE3_ASSOC)) {
                         $TempBool = true;
                     }
 
-                    $this->KAPNETSQLite3Result->finalize();
-                    unset($this->KAPNETSQLite3Result);
+                    $this->OVSQLite3Result->finalize();
+                    unset($this->OVSQLite3Result);
                 }
             }
         }
@@ -62,22 +62,22 @@ class ClsDataBaseOnlineVisitors extends ClsDataBaseSQLite3Base
     {
         $TempBool = false;
 
-        if (isset($this->KAPNETSQlite3Stmt)) {
-            $this->KAPNETSQlite3Stmt->reset();
-            $this->KAPNETSQlite3Stmt->clear();
+        if (isset($this->OVSQlite3Stmt)) {
+            $this->OVSQlite3Stmt->reset();
+            $this->OVSQlite3Stmt->clear();
         }
 
-        if ($this->KAPNETSQlite3Stmt = $this->KAPNETSQLite3->prepare("UPDATE OnlineVisitors SET ServerRequestTimeStamp = :ServerRequestTimeStamp WHERE RemoteIPAddress = :RemoteIPAddress AND State = :State AND City = :City AND ZipCode = :ZipCode")) {
-            $TempBindResult = $this->KAPNETSQlite3Stmt->bindValue(':RemoteIPAddress', $TempRemoteIPAddress, SQLITE3_TEXT);
-            $TempBindResult = $this->KAPNETSQlite3Stmt->bindValue(':State', $TempState, SQLITE3_TEXT);
-            $TempBindResult = $this->KAPNETSQlite3Stmt->bindValue(':City', $TempCity, SQLITE3_TEXT);
-            $TempBindResult = $this->KAPNETSQlite3Stmt->bindValue(':ZipCode', $TempZipCode, SQLITE3_TEXT);
-            $TempBindResult = $this->KAPNETSQlite3Stmt->bindValue(':ServerRequestTimeStamp', $TempServerRequestTimeStamp, SQLITE3_TEXT);
+        if ($this->OVSQlite3Stmt = $this->OVSQLite3->prepare("UPDATE OnlineVisitors SET ServerRequestTimeStamp = :ServerRequestTimeStamp WHERE RemoteIPAddress = :RemoteIPAddress AND State = :State AND City = :City AND ZipCode = :ZipCode")) {
+            $TempBindResult = $this->OVSQlite3Stmt->bindValue(':RemoteIPAddress', $TempRemoteIPAddress, SQLITE3_TEXT);
+            $TempBindResult = $this->OVSQlite3Stmt->bindValue(':State', $TempState, SQLITE3_TEXT);
+            $TempBindResult = $this->OVSQlite3Stmt->bindValue(':City', $TempCity, SQLITE3_TEXT);
+            $TempBindResult = $this->OVSQlite3Stmt->bindValue(':ZipCode', $TempZipCode, SQLITE3_TEXT);
+            $TempBindResult = $this->OVSQlite3Stmt->bindValue(':ServerRequestTimeStamp', $TempServerRequestTimeStamp, SQLITE3_TEXT);
             if ($TempBindResult) {
-                if ($this->KAPNETSQLite3Result = $this->KAPNETSQlite3Stmt->execute()) {
+                if ($this->OVSQLite3Result = $this->OVSQlite3Stmt->execute()) {
                     $TempBool = true;
-                    $this->KAPNETSQLite3Result->finalize();
-                    unset($this->KAPNETSQLite3Result);
+                    $this->OVSQLite3Result->finalize();
+                    unset($this->OVSQLite3Result);
                 }
             }
         }
@@ -96,7 +96,7 @@ class ClsDataBaseOnlineVisitors extends ClsDataBaseSQLite3Base
                 }
             } else {
                 if (
-                    $this->KAPNETSQlite3Stmt = $this->KAPNETSQLite3->prepare("
+                    $this->OVSQlite3Stmt = $this->OVSQLite3->prepare("
                                 INSERT INTO OnlineVisitors (
                                     RemoteIPAddress,
                                     RemoteExternalIPAddress,
@@ -131,28 +131,28 @@ class ClsDataBaseOnlineVisitors extends ClsDataBaseSQLite3Base
                                     :ServerRequestTimeStamp,
                                     :HTTPUserAgent)")
                 ) {
-                    $TempBindResult = $this->KAPNETSQlite3Stmt->bindParam(':RemoteIPAddress', $TempRemoteIPAddress, SQLITE3_TEXT);
-                    $TempBindResult = $this->KAPNETSQlite3Stmt->bindParam(':RemoteExternalIPAddress', $TempRemoteExternalIPAddress, SQLITE3_TEXT);
-                    $TempBindResult = $this->KAPNETSQlite3Stmt->bindParam(':Country', $TempCountry, SQLITE3_TEXT);
-                    $TempBindResult = $this->KAPNETSQlite3Stmt->bindParam(':State', $TempState, SQLITE3_TEXT);
-                    $TempBindResult = $this->KAPNETSQlite3Stmt->bindParam(':City', $TempCity, SQLITE3_TEXT);
-                    $TempBindResult = $this->KAPNETSQlite3Stmt->bindParam(':ZipCode', $TempZipCode, SQLITE3_TEXT);
-                    $TempBindResult = $this->KAPNETSQlite3Stmt->bindParam(':TimeZone', $TempTimeZone, SQLITE3_TEXT);
-                    $TempBindResult = $this->KAPNETSQlite3Stmt->bindParam(':Organization', $TempOrganization, SQLITE3_TEXT);
-                    $TempBindResult = $this->KAPNETSQlite3Stmt->bindParam(':ServerLocalIPAddress', $TempServerLocalIPAddress, SQLITE3_TEXT);
-                    $TempBindResult = $this->KAPNETSQlite3Stmt->bindParam(':ServerExternalIPAddress', $TempServerExternalIPAddress, SQLITE3_TEXT);
-                    $TempBindResult = $this->KAPNETSQlite3Stmt->bindParam(':ServerHTTPHostName', $TempServerHTTPHostName, SQLITE3_TEXT);
-                    $TempBindResult = $this->KAPNETSQlite3Stmt->bindParam(':HTTPReferer', $TempHTTPReferer, SQLITE3_TEXT);
-                    $TempBindResult = $this->KAPNETSQlite3Stmt->bindParam(':RequestURI', $TempRequestURI, SQLITE3_TEXT);
-                    $TempBindResult = $this->KAPNETSQlite3Stmt->bindParam(':ServerScriptName', $TempServerScriptName, SQLITE3_TEXT);
-                    $TempBindResult = $this->KAPNETSQlite3Stmt->bindParam(':ServerRequestTimeStamp', $TempServerRequestTimeStamp, SQLITE3_TEXT);
-                    $TempBindResult = $this->KAPNETSQlite3Stmt->bindParam(':HTTPUserAgent', $TempHTTPUserAgent, SQLITE3_TEXT);
+                    $TempBindResult = $this->OVSQlite3Stmt->bindParam(':RemoteIPAddress', $TempRemoteIPAddress, SQLITE3_TEXT);
+                    $TempBindResult = $this->OVSQlite3Stmt->bindParam(':RemoteExternalIPAddress', $TempRemoteExternalIPAddress, SQLITE3_TEXT);
+                    $TempBindResult = $this->OVSQlite3Stmt->bindParam(':Country', $TempCountry, SQLITE3_TEXT);
+                    $TempBindResult = $this->OVSQlite3Stmt->bindParam(':State', $TempState, SQLITE3_TEXT);
+                    $TempBindResult = $this->OVSQlite3Stmt->bindParam(':City', $TempCity, SQLITE3_TEXT);
+                    $TempBindResult = $this->OVSQlite3Stmt->bindParam(':ZipCode', $TempZipCode, SQLITE3_TEXT);
+                    $TempBindResult = $this->OVSQlite3Stmt->bindParam(':TimeZone', $TempTimeZone, SQLITE3_TEXT);
+                    $TempBindResult = $this->OVSQlite3Stmt->bindParam(':Organization', $TempOrganization, SQLITE3_TEXT);
+                    $TempBindResult = $this->OVSQlite3Stmt->bindParam(':ServerLocalIPAddress', $TempServerLocalIPAddress, SQLITE3_TEXT);
+                    $TempBindResult = $this->OVSQlite3Stmt->bindParam(':ServerExternalIPAddress', $TempServerExternalIPAddress, SQLITE3_TEXT);
+                    $TempBindResult = $this->OVSQlite3Stmt->bindParam(':ServerHTTPHostName', $TempServerHTTPHostName, SQLITE3_TEXT);
+                    $TempBindResult = $this->OVSQlite3Stmt->bindParam(':HTTPReferer', $TempHTTPReferer, SQLITE3_TEXT);
+                    $TempBindResult = $this->OVSQlite3Stmt->bindParam(':RequestURI', $TempRequestURI, SQLITE3_TEXT);
+                    $TempBindResult = $this->OVSQlite3Stmt->bindParam(':ServerScriptName', $TempServerScriptName, SQLITE3_TEXT);
+                    $TempBindResult = $this->OVSQlite3Stmt->bindParam(':ServerRequestTimeStamp', $TempServerRequestTimeStamp, SQLITE3_TEXT);
+                    $TempBindResult = $this->OVSQlite3Stmt->bindParam(':HTTPUserAgent', $TempHTTPUserAgent, SQLITE3_TEXT);
                     if ($TempBindResult) {
-                        if ($this->KAPNETSQLite3Result = $this->KAPNETSQlite3Stmt->execute()) {
+                        if ($this->OVSQLite3Result = $this->OVSQlite3Stmt->execute()) {
                             $TempBool = true;
 
-                            $this->KAPNETSQLite3Result->finalize();
-                            unset($this->KAPNETSQLite3Result);
+                            $this->OVSQLite3Result->finalize();
+                            unset($this->OVSQLite3Result);
                         }
                     }
                 }
@@ -167,16 +167,16 @@ class ClsDataBaseOnlineVisitors extends ClsDataBaseSQLite3Base
     {
         $TempAry = array();
 
-        if (isset($this->KAPNETSQlite3Stmt)) {
-            $this->KAPNETSQlite3Stmt->reset();
-            $this->KAPNETSQlite3Stmt->clear();
+        if (isset($this->OVSQlite3Stmt)) {
+            $this->OVSQlite3Stmt->reset();
+            $this->OVSQlite3Stmt->clear();
         }
 
         if (
-            $this->KAPNETSQlite3Stmt = $this->KAPNETSQLite3->prepare("SELECT RemoteIPAddress, State, City, ZipCode, ServerRequestTimeStamp FROM OnlineVisitors ORDER BY datetime(ServerRequestTimeStamp) DESC LIMIT 20")
+            $this->OVSQlite3Stmt = $this->OVSQLite3->prepare("SELECT RemoteIPAddress, State, City, ZipCode, ServerRequestTimeStamp FROM OnlineVisitors ORDER BY datetime(ServerRequestTimeStamp) DESC LIMIT 20")
         ) {
-            if ($this->KAPNETSQLite3Result = $this->KAPNETSQlite3Stmt->execute()) {
-                while (($Row = $this->KAPNETSQLite3Result->fetchArray(SQLITE3_ASSOC))) {
+            if ($this->OVSQLite3Result = $this->OVSQlite3Stmt->execute()) {
+                while (($Row = $this->OVSQLite3Result->fetchArray(SQLITE3_ASSOC))) {
                     $CurrentTime = new DateTime();
                     $RowTime = date_create($Row['ServerRequestTimeStamp']);
 
@@ -186,8 +186,8 @@ class ClsDataBaseOnlineVisitors extends ClsDataBaseSQLite3Base
                     unset($RowTime);
                     unset($CurrentTime);
                 }
-                $this->KAPNETSQLite3Result->finalize();
-                unset($this->KAPNETSQLite3Result);
+                $this->OVSQLite3Result->finalize();
+                unset($this->OVSQLite3Result);
             }
         }
 

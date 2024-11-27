@@ -1,31 +1,31 @@
 <?php
 
-namespace KAPNET;
+namespace OnlineVisitors;
 
 use SQLite3;
 
 class ClsDataBaseSQLite3Base
 {
-    protected object $KAPNETSQLite3;
-    protected object $KAPNETSQlite3Stmt;
-    protected object $KAPNETSQLite3Result;
-    protected string $KAPNETServerDocumentRoot;
-    protected string $KAPNETDatabaseFileName;
-    protected string $KAPNETDatabasePurpose;
-    protected string $KAPNETDatabaseStatus;
+    protected object $OVSQLite3;
+    protected object $OVSQlite3Stmt;
+    protected object $OVSQLite3Result;
+    protected string $OVServerDocumentRoot;
+    protected string $OVDatabaseFileName;
+    protected string $OVDatabasePurpose;
+    protected string $OVDatabaseStatus;
 
     public function __construct($TempServerDocumentRoot = "", $TempDatabaseFileName = "Blank.db")
     {
-        $this->KAPNETServerDocumentRoot = $TempServerDocumentRoot;
-        $this->KAPNETDatabaseFileName = $TempDatabaseFileName;
+        $this->OVServerDocumentRoot = $TempServerDocumentRoot;
+        $this->OVDatabaseFileName = $TempDatabaseFileName;
 
         $this->databasePurposePopulate();
 
         if ($this->databaseCreateOpen()) {
-            if ($this->createTable($this->KAPNETDatabasePurpose)) {
-                $this->KAPNETDatabaseStatus = $this->KAPNETDatabasePurpose . "Ready";
+            if ($this->createTable($this->OVDatabasePurpose)) {
+                $this->OVDatabaseStatus = $this->OVDatabasePurpose . "Ready";
             } else {
-                $this->KAPNETDatabaseStatus = $this->KAPNETDatabasePurpose . "NOT-Ready";
+                $this->OVDatabaseStatus = $this->OVDatabasePurpose . "NOT-Ready";
             }
         }
     }
@@ -34,25 +34,25 @@ class ClsDataBaseSQLite3Base
 
     private function databasePurposePopulate(): void
     {
-        if (str_contains($this->KAPNETDatabaseFileName, '.')) {
-            $this->KAPNETDatabasePurpose = current(explode('.', $this->KAPNETDatabaseFileName));
+        if (str_contains($this->OVDatabaseFileName, '.')) {
+            $this->OVDatabasePurpose = current(explode('.', $this->OVDatabaseFileName));
         } else {
-            $this->KAPNETDatabasePurpose = "NoDatabasePurpose";
+            $this->OVDatabasePurpose = "NoDatabasePurpose";
         }
     }
 
     private function databaseCreateOpen(): bool
     {
-        if (empty($this->KAPNETServerDocumentRoot)) {
-            $this->KAPNETSQLite3 = new SQLite3($this->KAPNETDatabaseFileName);
+        if (empty($this->OVServerDocumentRoot)) {
+            $this->OVSQLite3 = new SQLite3($this->OVDatabaseFileName);
         } else {
-            $this->KAPNETSQLite3 = new SQLite3($this->KAPNETServerDocumentRoot . DIRECTORY_SEPARATOR . $this->KAPNETDatabaseFileName);
+            $this->OVSQLite3 = new SQLite3($this->OVServerDocumentRoot . DIRECTORY_SEPARATOR . $this->OVDatabaseFileName);
         }
-        $this->KAPNETSQLite3->exec('PRAGMA journal_mode = wal;');
-        $this->KAPNETSQLite3->exec('PRAGMA synchronous = NORMAL;');
-        // $this->KAPNETSQLite3->exec('PRAGMA schema.taille_cache = 16000;');
+        $this->OVSQLite3->exec('PRAGMA journal_mode = wal;');
+        $this->OVSQLite3->exec('PRAGMA synchronous = NORMAL;');
+        // $this->OVSQLite3->exec('PRAGMA schema.taille_cache = 16000;');
 
-        if ($this->KAPNETSQLite3->busyTimeout(5000)) {
+        if ($this->OVSQLite3->busyTimeout(5000)) {
             if ($this->getLastErrorCode() == 0) {
                 if ($this->getLastErrorMessage() == "not an error") {
                     return true;
@@ -85,10 +85,10 @@ class ClsDataBaseSQLite3Base
             ServerRequestTimeStamp TEXT NOT NULL,
             HTTPUserAgent TEXT)";
 
-        if ($this->KAPNETSQLite3->exec($TempQuery)) {
+        if ($this->OVSQLite3->exec($TempQuery)) {
             if ($this->getLastErrorCode() == 0) {
                 if ($this->getLastErrorMessage() == "not an error") {
-                    $this->KAPNETSQLite3->enableExceptions(true);
+                    $this->OVSQLite3->enableExceptions(true);
                     return true;
                 }
             }
@@ -107,7 +107,7 @@ class ClsDataBaseSQLite3Base
             $TempQuery = "SELECT * FROM " . $TempQueryType . " ORDER BY Counter DESC LIMIT 700";
         }
 
-        $TempSQLite3Result = $this->KAPNETSQLite3->query($TempQuery);
+        $TempSQLite3Result = $this->OVSQLite3->query($TempQuery);
         if ($TempSQLite3Result->numColumns() > 0) {
             while ($Row = $TempSQLite3Result->fetchArray(SQLITE3_ASSOC)) {
                 $TempAllRecordsAry[] = $Row;
@@ -123,7 +123,7 @@ class ClsDataBaseSQLite3Base
     public function getAllColumnNames(string $TempTableName): array
     {
         $TempColumnNamesAry = array();
-        $TempSQLite3Result = $this->KAPNETSQLite3->query("SELECT name FROM pragma_table_info('" . $TempTableName . "') as tblInfo");
+        $TempSQLite3Result = $this->OVSQLite3->query("SELECT name FROM pragma_table_info('" . $TempTableName . "') as tblInfo");
         if ($TempSQLite3Result->numColumns() > 0) {
             while ($Row = $TempSQLite3Result->fetchArray(SQLITE3_ASSOC)) {
                 $TempColumnNamesAry[] = $Row['name'];
@@ -136,7 +136,7 @@ class ClsDataBaseSQLite3Base
 
     public function getAllRecordsCount(string $TempTableName): int
     {
-        $TempResult = $this->KAPNETSQLite3->querySingle("SELECT COUNT(*) FROM " . $TempTableName);
+        $TempResult = $this->OVSQLite3->querySingle("SELECT COUNT(*) FROM " . $TempTableName);
         if (is_int($TempResult)) {
             return $TempResult;
         } else {
@@ -148,33 +148,33 @@ class ClsDataBaseSQLite3Base
 
     public function getDatabasePurpose(): string
     {
-        return $this->KAPNETDatabasePurpose;
+        return $this->OVDatabasePurpose;
     }
 
     public function getDatabaseStatus(): string
     {
-        return $this->KAPNETDatabaseStatus;
+        return $this->OVDatabaseStatus;
     }
 
     public function getLastInsertRowID(): int
     {
-        return $this->KAPNETSQLite3->lastInsertRowID();
+        return $this->OVSQLite3->lastInsertRowID();
     }
 
     public function getLastErrorCode(): int
     {
-        return $this->KAPNETSQLite3->lastErrorCode();
+        return $this->OVSQLite3->lastErrorCode();
     }
 
     public function getLastErrorMessage(): string
     {
-        return $this->KAPNETSQLite3->lastErrorMsg();
+        return $this->OVSQLite3->lastErrorMsg();
     }
 
     public function getVersion(): string
     {
         $TempAry = array();
-        $TempAry = $this->KAPNETSQLite3->version();
+        $TempAry = $this->OVSQLite3->version();
         return "Version: " . $TempAry['versionString'];
     }
 
@@ -182,11 +182,11 @@ class ClsDataBaseSQLite3Base
 
     public function __destruct()
     {
-        if (isset($this->KAPNETSQlite3Stmt)) {
-            $this->KAPNETSQlite3Stmt->close();
-            unset($this->KAPNETSQlite3Stmt);
+        if (isset($this->OVSQlite3Stmt)) {
+            $this->OVSQlite3Stmt->close();
+            unset($this->OVSQlite3Stmt);
         }
-        $this->KAPNETSQLite3->close();
-        unset($this->KAPNETSQLite3);
+        $this->OVSQLite3->close();
+        unset($this->OVSQLite3);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace KAPNET;
+namespace OnlineVisitors;
 
 require_once('class.db.sqlite3.onlinevisitors.php');
 require_once('class.onlinevisitors.curl.php');
@@ -23,7 +23,7 @@ function executeOnlineVisitorsInsertRow(): int
 
     if ($DatabaseOnlineVisitors->getDatabaseStatus() == "OnlineVisitorsReady") {
         if (empty($_SERVER['DOCUMENT_ROOT'])) {
-            $OnlineVisitorsCurl->populateIPAddressGeo("127.0.0.1", "127.0.0.1", "old-local.kevinp.net", "function.onlinevisitors.php", time());
+            $OnlineVisitorsCurl->populateIPAddressGeo("127.0.0.1", "127.0.0.1", "local.example.com", "function.onlinevisitors.php", time());
         } else {
             $OnlineVisitorsCurl->populateIPAddressGeo($_SERVER['REMOTE_ADDR'], $_SERVER['LOCAL_ADDR'], $_SERVER['HTTP_HOST'], $_SERVER['SCRIPT_NAME'], $_SERVER['REQUEST_TIME']);
         }
