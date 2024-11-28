@@ -1,0 +1,14 @@
+{
+    "name": "hotelmah/online-visitors",
+    "description": "Online Visitors returns a one-dimensional indexed array of GeoIP data with Remote IP Addresses and sorted DateTime differences for rendering to a view.",
+    "autoload": {
+        "psr-4": {
+            "hotelmah\\online-visitors\\": "src/"
+        },
+        "files": [
+            "src/functions.onlinevisitors.php"
+        ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

@@ -62,13 +62,14 @@ function executeOnlineVisitorsInsertRow(): int
 
 function executeGetOnlineVisitorsLatestIPAddressesWithTime(): array
 {
+    $TempAry = array();
+
     if (empty($_SERVER['DOCUMENT_ROOT'])) {
         $DatabaseOnlineVisitors = new ClsDataBaseOnlineVisitors('', 'OnlineVisitors.db');
     } else {
         $DatabaseOnlineVisitors = new ClsDataBaseOnlineVisitors($_SERVER['DOCUMENT_ROOT'], 'OnlineVisitors.db');
     }
 
-    $TempAry = array();
     $TempAry = $DatabaseOnlineVisitors->getOnlineVisitorsLatestIPAddressesWithTime();
 
     unset($DatabaseOnlineVisitors);

@@ -12,6 +12,7 @@ class ClsDataBaseOnlineVisitors extends ClsDataBaseSQLite3Base
     {
         $SearchTimeStamp = strtotime("-10 Minutes");
         $TempSQLite3Result = $this->OVSQLite3->query("SELECT RemoteIPAddress, ServerRequestTimeStamp FROM OnlineVisitors WHERE RemoteIPAddress = '" . $TempRemoteIPAddress . "'");
+
         if ($TempSQLite3Result->numColumns() > 0) {
             $NumRows = 0;
             while ($Row = $TempSQLite3Result->fetchArray(SQLITE3_ASSOC)) {
@@ -44,6 +45,7 @@ class ClsDataBaseOnlineVisitors extends ClsDataBaseSQLite3Base
             $TempBindResult = $this->OVSQlite3Stmt->bindValue(':State', $TempState, SQLITE3_TEXT);
             $TempBindResult = $this->OVSQlite3Stmt->bindValue(':City', $TempCity, SQLITE3_TEXT);
             $TempBindResult = $this->OVSQlite3Stmt->bindValue(':ZipCode', $TempZipCode, SQLITE3_TEXT);
+
             if ($TempBindResult) {
                 if ($this->OVSQLite3Result = $this->OVSQlite3Stmt->execute()) {
                     while ($Row = $this->OVSQLite3Result->fetchArray(SQLITE3_ASSOC)) {
@@ -73,6 +75,7 @@ class ClsDataBaseOnlineVisitors extends ClsDataBaseSQLite3Base
             $TempBindResult = $this->OVSQlite3Stmt->bindValue(':City', $TempCity, SQLITE3_TEXT);
             $TempBindResult = $this->OVSQlite3Stmt->bindValue(':ZipCode', $TempZipCode, SQLITE3_TEXT);
             $TempBindResult = $this->OVSQlite3Stmt->bindValue(':ServerRequestTimeStamp', $TempServerRequestTimeStamp, SQLITE3_TEXT);
+
             if ($TempBindResult) {
                 if ($this->OVSQLite3Result = $this->OVSQlite3Stmt->execute()) {
                     $TempBool = true;
@@ -147,6 +150,7 @@ class ClsDataBaseOnlineVisitors extends ClsDataBaseSQLite3Base
                     $TempBindResult = $this->OVSQlite3Stmt->bindParam(':ServerScriptName', $TempServerScriptName, SQLITE3_TEXT);
                     $TempBindResult = $this->OVSQlite3Stmt->bindParam(':ServerRequestTimeStamp', $TempServerRequestTimeStamp, SQLITE3_TEXT);
                     $TempBindResult = $this->OVSQlite3Stmt->bindParam(':HTTPUserAgent', $TempHTTPUserAgent, SQLITE3_TEXT);
+
                     if ($TempBindResult) {
                         if ($this->OVSQLite3Result = $this->OVSQlite3Stmt->execute()) {
                             $TempBool = true;

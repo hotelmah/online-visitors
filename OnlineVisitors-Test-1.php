@@ -1,8 +1,11 @@
 <?php
 
-namespace OnlineVisitors;
+namespace TEST;
 
-require_once('Includes/function.onlinevisitors.php');
+// require_once('vendor/autoload.php');
+require_once('src/functions.onlinevisitors.php');
+
+use function OnlineVisitors\{executeOnlineVisitorsInsertRow, executeGetOnlineVisitorsLatestIPAddressesWithTime};
 
 //* ===================================================================================================================== */
 
