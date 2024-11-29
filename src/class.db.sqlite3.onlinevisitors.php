@@ -177,7 +177,7 @@ class ClsDataBaseOnlineVisitors extends ClsDataBaseSQLite3Base
         }
 
         if (
-            $this->OVSQlite3Stmt = $this->OVSQLite3->prepare("SELECT RemoteIPAddress, State, City, ZipCode, ServerRequestTimeStamp FROM OnlineVisitors ORDER BY datetime(ServerRequestTimeStamp) DESC LIMIT 20")
+            $this->OVSQlite3Stmt = $this->OVSQLite3->prepare("SELECT RemoteExternalIPAddress, State, City, ZipCode, ServerRequestTimeStamp FROM OnlineVisitors ORDER BY datetime(ServerRequestTimeStamp) DESC LIMIT 20")
         ) {
             if ($this->OVSQLite3Result = $this->OVSQlite3Stmt->execute()) {
                 while (($Row = $this->OVSQLite3Result->fetchArray(SQLITE3_ASSOC))) {
@@ -185,7 +185,7 @@ class ClsDataBaseOnlineVisitors extends ClsDataBaseSQLite3Base
                     $RowTime = date_create($Row['ServerRequestTimeStamp']);
 
                     $DiffDate = date_diff($CurrentTime, $RowTime);
-                    $TempAry[] = $Row['City'] . ', ' . $Row['State'] . ' ' . $Row['ZipCode'] . ' (' . $DiffDate->{'days'} . (($DiffDate->{'days'} != 1) ? ' Days ' : ' Day ') . $DiffDate->{'h'} . (($DiffDate->{'h'} != 1) ? ' Hours ' : ' Hour ') . $DiffDate->{'i'} . (($DiffDate->{'i'} != 1) ? ' Minutes ago) ' : ' Minute ago) ') . ' ' . $Row['RemoteIPAddress'];
+                    $TempAry[] = $Row['City'] . ', ' . $Row['State'] . ' ' . $Row['ZipCode'] . ' (' . $DiffDate->{'days'} . (($DiffDate->{'days'} != 1) ? ' Days ' : ' Day ') . $DiffDate->{'h'} . (($DiffDate->{'h'} != 1) ? ' Hours ' : ' Hour ') . $DiffDate->{'i'} . (($DiffDate->{'i'} != 1) ? ' Minutes ago) ' : ' Minute ago) ') . ' ' . $Row['RemoteExternalIPAddress'];
 
                     unset($RowTime);
                     unset($CurrentTime);
