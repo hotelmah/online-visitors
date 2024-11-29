@@ -1,9 +1,10 @@
 ## About
 This package returns a PHP one-dimensional indexed array of GeoIP data with Remote IP Addresses and sorted DateTime differences for you to use as you wish like rendering to a view.
 
+
 ## Files Not Included in Packagist Package
-- .gitattributes
-- OnlineVisitors-Test-1.php
+- *.gitattributes*
+- *OnlineVisitors-Test-1.php*
 
 
 ## Test File
@@ -14,7 +15,7 @@ This package returns a PHP one-dimensional indexed array of GeoIP data with Remo
 ## In your Script
 In each page that you want to record an online visitor, add the following (See the test file for an example):
 `
-require_once('src/functions.onlinevisitors.php');
+require_once('vendor/autoload.php');
 `
 
 `
@@ -37,6 +38,14 @@ Process this returned array as you wish.
 
 
 ## Installation - Composer
+- run this command in your project root:
+
+`
+composer require hotelmah/online-visitors
+`
+
+- No need to manually create a composer.json file since this command does it automatically.
+- The package is listed on Packagist, but is hosted on GitHub where the source is pulled from.
 
 
 ## Installation - Manual
@@ -60,9 +69,10 @@ Process this returned array as you wish.
 - On your server, and in your PHP.ini ensure that SQLite3 is enabled and working.
 
 
-## Third-Party Service
-- This script uses Curl to get GeoIP data for the Remote IP Address received.
-- The GeoIP service is a free and open source service.
+## Third-Party Services
+- This script uses cURL to get GeoIP data for the External Remote IP Address received.
+- The GeoIP service is a free and publically available service.
+- Your own External Remote IP Address is obtained from a free public service.
 
 
 ## Feedback
