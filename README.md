@@ -13,7 +13,8 @@ This package returns a PHP one-dimensional indexed array of GeoIP data with Remo
 
 
 ## In your Script
-In each page that you want to record an online visitor, add the following (See the test file for an example):
+- In each page that you want to record an online visitor, add the following (see the test file for an example):
+
 `
 require_once('vendor/autoload.php');
 `
@@ -22,19 +23,19 @@ require_once('vendor/autoload.php');
 use function OnlineVisitors\{executeOnlineVisitorsInsertRow, executeGetOnlineVisitorsLatestIPAddressesWithTime};
 `
 
-Call this function to insert a row into the database:
+- Call this function to insert a row into the database:
 
 `
 executeOnlineVisitorsInsertRow();
 `
 
-Get the latest Online Visitors returned in an indexed array:
+- Get the latest Online Visitors returned in an indexed array:
 
 `
 $SelectOptionsAry = executeGetOnlineVisitorsLatestIPAddressesWithTime();
 `
 
-Process this returned array as you wish.
+- Process this returned array as you wish.
 
 
 ## Installation - Composer
@@ -44,13 +45,13 @@ Process this returned array as you wish.
 composer require hotelmah/online-visitors
 `
 
-- No need to manually create a composer.json file since this command does it automatically.
+- There is no need to manually create/update a composer.json file in your project root since this command does it automatically.
 - The package is listed on Packagist, but is hosted on GitHub where the source is pulled from.
 
 
 ## Installation - Manual
-- Copy the src directory contents to an appropriate directory like includes/ in your LAMP web hosting provider.
-- Refer to the 'In your Script' heading above.
+- Copy the src directory contents to an appropriately named directory like includes/ in your LAMP web hosting provider.
+- Refer to the 'In your Script' heading above and/or test file.
 
 
 ## Notes
@@ -59,14 +60,16 @@ composer require hotelmah/online-visitors
 
 
 ## Database
+- On your server and in your PHP.ini, ensure that SQLite3 is enabled and working.
 - A sample SQLite3 database is not included in this repository because the script automatically creates the SQLite3 database if not found. If found, it simply updates the tables.
 - The script creates/updates the SQLite3 database in your root web folder (html_public).
 - SQLite3 does not require a username or password. Thus, there is no authentication to use the database.
 - The database is a single file.
 - The script must have read/write access to the folder the database is in.
+- The database default name is OnlineVisitors.db.
+- There should be no duplicate IP Addresses in the database unless the City, State, or Zip Code are different.
 - You can delete the SQLite3 database on your server at will to start a new database, or rename the database to start a new database.
-- The database default name is OnlineVisitors.db
-- On your server, and in your PHP.ini ensure that SQLite3 is enabled and working.
+
 
 
 ## Third-Party Services
@@ -83,3 +86,7 @@ composer require hotelmah/online-visitors
 
 ## Future Updates
 - The latest 20 records are retrieved. This limit is not yet passed in as a parameter.
+
+
+## License
+- GNU GENERAL PUBLIC LICENSE, Version 3.

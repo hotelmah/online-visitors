@@ -1,6 +1,21 @@
 {
     "name": "hotelmah/online-visitors",
-    "description": "Online Visitors returns a one-dimensional indexed array of GeoIP data with Remote IP Addresses and sorted DateTime differences for rendering to a view.",
+    "type": "library",
+    "description": "Online Visitors package returns a PHP one-dimensional indexed array of GeoIP data with Remote IP Addresses and sorted DateTime differences for you to use as you wish like rendering to a view.",
+    "keywords": ["Online Visitors","SQLite3", "cURL", "Counters", "PHP"],
+    "homepage": "https://github.com/hotelmah/online-visitors",
+    "license": "GNU GENERAL PUBLIC LICENSE, Version 3",
+    "authors": [
+        {
+            "name": "Kevin Pereira",
+            "email": "kevin@kevinp.net",
+            "homepage": "https://github.com/hotelmah",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0"
+    },
     "autoload": {
         "psr-4": {
             "hotelmah\\online-visitors\\": "src/"
