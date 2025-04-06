@@ -1,9 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TEST;
 
 require_once('vendor/autoload.php');
 // require_once('src/functions.onlinevisitors.php');
+
+date_default_timezone_set("America/Chicago");
 
 use function OnlineVisitors\{executeOnlineVisitorsInsertRow, executeGetOnlineVisitorsLatestIPAddressesWithTime};
 

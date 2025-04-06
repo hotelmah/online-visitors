@@ -1,6 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace OnlineVisitors;
+
+date_default_timezone_set("America/Chicago");
 
 use DateTime;
 

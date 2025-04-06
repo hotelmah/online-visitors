@@ -1,6 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace OnlineVisitors;
+
+date_default_timezone_set("America/Chicago");
 
 use SQLite3;
 
@@ -123,7 +127,8 @@ class ClsDataBaseSQLite3Base
     public function getAllColumnNames(string $TempTableName): array
     {
         $TempColumnNamesAry = array();
-        $TempSQLite3Result = $this->OVSQLite3->query("SELECT name FROM pragma_table_info('" . $TempTableName . "') as tblInfo");
+        // $TempSQLite3Result = $this->OVSQLite3->query("SELECT name FROM pragma_table_info('" . $TempTableName . "') as tblInfo");
+        $TempSQLite3Result = $this->OVSQLite3->query("PRAGMA table_info('" . $TempTableName . "');");
         if ($TempSQLite3Result->numColumns() > 0) {
             while ($Row = $TempSQLite3Result->fetchArray(SQLITE3_ASSOC)) {
                 $TempColumnNamesAry[] = $Row['name'];

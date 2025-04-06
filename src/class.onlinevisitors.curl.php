@@ -1,7 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 // 01APR2024
 namespace OnlineVisitors;
+
+date_default_timezone_set("America/Chicago");
 
 class ClsOnlineVisitorsCurl
 {
@@ -23,7 +27,13 @@ class ClsOnlineVisitorsCurl
     public function populateIPAddressGeo(string $TempRemoteIPAddress, string $TempServerLocalIPAddress, string $TempServerHTTPHostName, string $TempServerScriptName, string $TempServerRequestTimeStamp): void
     {
         $Response = null;
-        exec("ping -n 1 google.com", $Output, $Response);
+
+        // $Output = system("ping -c 1 google.com", $Response);
+        if (isset($_SERVER['LOCAL_ADDR'])) {
+            exec("ping -n 1 google.com", $Output, $Response);
+        } elseif (isset($_SERVER['SERVER_ADDR'])) {
+            exec("ping -c 1 google.com", $Output, $Response);
+        }
 
         // if old-local resolves to 127.0.0.1 and REMOTE_ADDR resolves to 127.0.0.1, then get external IP. Otherwise, use REMOTE_ADDR
         if ($TempRemoteIPAddress == $TempServerLocalIPAddress) {
@@ -33,7 +43,11 @@ class ClsOnlineVisitorsCurl
         }
 
         if ($Response == 0) {
-            $this->OnlineVisitorsGeoIP = json_decode(curl_exec($this->OVCurl), true);
+            $TempJsonDecode = json_decode(curl_exec($this->OVCurl), true);
+            if (is_null($TempJsonDecode)) {
+                $this->OnlineVisitorsGeoIP = [];
+            }
+            $this->OnlineVisitorsGeoIP = $TempJsonDecode;
         }
 
         if (($TempRemoteIPAddress == null) || ($TempRemoteIPAddress == "")) {
@@ -51,7 +65,7 @@ class ClsOnlineVisitorsCurl
         $this->OnlineVisitorsGeoIP['ServerExternalIPAddress'] = gethostbyname($TempServerHTTPHostName);
         $this->OnlineVisitorsGeoIP['ServerHTTPHostName'] = $TempServerHTTPHostName;
         $this->OnlineVisitorsGeoIP['ServerScriptName'] = $TempServerScriptName;
-        $this->OnlineVisitorsGeoIP['ServerRequestTimeStamp'] = date("Y-m-d H:i:s", date($TempServerRequestTimeStamp));
+        $this->OnlineVisitorsGeoIP['ServerRequestTimeStamp'] = date("Y-m-d H:i:s", (int)date($TempServerRequestTimeStamp));
     }
 
     /* ===================================================================================================================== */
@@ -61,7 +75,7 @@ class ClsOnlineVisitorsCurl
         if (isset($this->OnlineVisitorsGeoIP['RemoteIPAddress'])) {
             return $this->OnlineVisitorsGeoIP['RemoteIPAddress'];
         } else {
-            return "No Remote IP Adress";
+            return "No Remote IP Address";
         }
     }
 
@@ -70,7 +84,7 @@ class ClsOnlineVisitorsCurl
         if (isset($this->OnlineVisitorsGeoIP['RemoteExternalIPAddress'])) {
             return $this->OnlineVisitorsGeoIP['RemoteExternalIPAddress'];
         } else {
-            return "No Remote External IP Adress";
+            return "No Remote External IP Address";
         }
     }
 
@@ -137,7 +151,7 @@ class ClsOnlineVisitorsCurl
         if (isset($this->OnlineVisitorsGeoIP['ServerLocalIPAddress'])) {
             return $this->OnlineVisitorsGeoIP['ServerLocalIPAddress'];
         } else {
-            return "No Server Local IP Adress";
+            return "No Server Local IP Address";
         }
     }
 
@@ -146,7 +160,7 @@ class ClsOnlineVisitorsCurl
         if (isset($this->OnlineVisitorsGeoIP['ServerExternalIPAddress'])) {
             return $this->OnlineVisitorsGeoIP['ServerExternalIPAddress'];
         } else {
-            return "No Server External IP Adress";
+            return "No Server External IP Address";
         }
     }
 
